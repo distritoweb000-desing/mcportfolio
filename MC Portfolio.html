@@ -1,0 +1,376 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>MC Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: scroll narrativo. Cada capítulo ocupa una escena fija (sticky) que avanza con el scroll.
+   Ritmo: portada abierta, manifiesto con palabras que se encienden, tres capítulos, línea de proceso,
+   órbita de aliados, índice de reportes y contacto. Tipografía única: Montserrat, con el peso marcando la jerarquía. */
+:root{
+  --bg:#F2F3F5; --fg:#0C0F16; --mute:#6A7081; --line:#D6D9E0; --accent:#4D5B8A; --surface:#E8EAEE;
+  --f-display:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-body:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gutter:clamp(16px,4vw,56px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0C11;--fg:#EBEDF2;--mute:#8A90A2;--line:#242836;--accent:#A7B1CC;--surface:#12151D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A0C11;--fg:#EBEDF2;--mute:#8A90A2;--line:#242836;--accent:#A7B1CC;--surface:#12151D;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-weight:400;font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1400px;margin:0 auto}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.display{font-family:var(--f-display);font-weight:600;line-height:1.02;letter-spacing:-.035em;text-wrap:balance}
+.display em{font-style:normal;color:var(--accent)}
+
+/* header: transparente arriba, blanco al bajar */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+body.sc::before{background:#FFFFFF}
+header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:14px max(var(--gutter),env(safe-area-inset-right,0px)) 14px max(var(--gutter),env(safe-area-inset-left,0px));
+  background:linear-gradient(var(--bg),transparent);transition:background .25s,border-color .25s,color .25s;border-bottom:1px solid transparent}
+body.sc header{background:#FFFFFF;color:#0C0F16;border-bottom-color:#D6D9E0}
+.logo{display:inline-flex;align-items:center;text-decoration:none}
+.logo-svg{height:34px;width:auto;display:block;fill:currentColor}
+nav{display:flex;gap:28px;align-items:center}
+nav a{font-size:13px;font-weight:500;text-decoration:none;color:var(--mute);transition:color .2s}
+nav a:hover{color:var(--fg)}
+body.sc nav a{color:#6A7081}
+body.sc nav a:hover{color:#0C0F16}
+.tt{background:none;border:1px solid var(--line);color:var(--fg);border-radius:999px;padding:6px 14px;font:inherit;font-weight:500;font-size:12px;cursor:pointer}
+body.sc .tt{border-color:#D6D9E0;color:#0C0F16}
+@media(max-width:760px){nav a{display:none}.logo-svg{height:28px}}
+
+/* portada */
+.hero{position:relative;padding-block:clamp(130px,22vh,220px) clamp(70px,12vh,140px);padding-inline:var(--gutter)}
+#field{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero .wrap{position:relative;z-index:1}
+.hero h1{font-size:clamp(38px,8vw,128px);margin:22px 0 40px;max-width:12ch}
+.hero-foot{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;align-items:flex-end}
+.hero-foot p{max-width:46ch;margin:0;color:var(--mute);font-size:17px;font-weight:300}
+.cue{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);font-weight:500}
+.cue i{display:inline-block;width:1px;height:38px;background:var(--fg);vertical-align:middle;margin-left:12px;transform-origin:top;animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* manifiesto */
+.manifest{height:240vh;position:relative}
+.manifest .stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;padding-inline:var(--gutter)}
+.manifest p.big{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,3.7vw,58px);line-height:1.14;letter-spacing:-.03em;margin:0;max-width:22em}
+.manifest .w{opacity:.2;transition:opacity .25s}
+.manifest .w.on{opacity:1}
+.manifest .eyebrow{margin-bottom:28px;display:block}
+
+/* capítulos */
+.chap{height:320vh;position:relative}
+.chap .stick{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gutter);align-items:center;padding-inline:var(--gutter)}
+.chap ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.chap li{font-family:var(--f-display);font-weight:600;letter-spacing:-.03em;font-size:clamp(28px,4vw,60px);line-height:1.1;color:var(--mute);opacity:.45;transition:all .4s;cursor:default}
+.chap li.on{color:var(--fg);opacity:1;transform:translateX(14px)}
+.panels{position:relative;min-height:280px}
+.panel{font-weight:300;font-size:clamp(18px,1.9vw,26px);line-height:1.5;max-width:30em;transition:opacity .5s,transform .5s}
+.panel .eyebrow{display:block;margin-bottom:12px}
+.js .panel{position:absolute;inset:0 auto auto 0;opacity:0;transform:translateY(18px);pointer-events:none}
+.js .panel.on{opacity:1;transform:none;pointer-events:auto;position:relative}
+.panel+.panel{margin-top:28px}
+.js .panel+.panel{margin-top:0}
+.pillars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 28px;margin-top:30px;font-size:15px;color:var(--mute)}
+.pillars b{display:block;color:var(--fg);font-weight:600;font-size:17px}
+@media(max-width:860px){.chap .stick{grid-template-columns:1fr;align-content:center;gap:24px}.chap li.on{transform:none}}
+
+/* proceso */
+.flow{height:420vh;position:relative}
+.flow .stick{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:var(--gutter);align-items:center;padding-inline:var(--gutter)}
+.flow h2{font-size:clamp(30px,4.6vw,70px);margin:18px 0 22px}
+.flow .lead{color:var(--mute);max-width:40ch;margin:0;font-weight:300}
+.steps{position:relative;padding-left:44px;display:grid;gap:clamp(18px,4vh,40px)}
+.rail{position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.rail i{position:absolute;left:0;top:0;width:100%;height:0;background:var(--accent)}
+.step{position:relative;opacity:.4;transition:opacity .4s}
+.step::before{content:"";position:absolute;left:-40px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--line);transition:all .3s}
+.step.on{opacity:1}.step.on::before{background:var(--accent);border-color:var(--accent)}
+.step h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.025em;font-size:clamp(20px,2.3vw,34px);margin:0;line-height:1.12}
+.step p{margin:6px 0 0;color:var(--mute);max-width:42ch;font-size:15px;font-weight:300}
+.step .k{font-size:11px;letter-spacing:.18em;color:var(--mute);text-transform:uppercase;font-weight:600}
+@media(max-width:860px){.flow .stick{grid-template-columns:1fr;align-content:center;gap:22px}.flow .lead{display:none}}
+
+/* experiencia inmobiliaria + marquee */
+.know{padding:clamp(80px,14vh,160px) var(--gutter) 40px}
+.know h2{font-size:clamp(30px,5.4vw,86px);max-width:15ch;margin:20px 0 48px}
+.know-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.know-grid div{padding:24px 20px 28px 0;border-right:1px solid var(--line);padding-left:20px}
+.know-grid div:first-child{padding-left:0}.know-grid div:last-child{border-right:0}
+.know-grid b{display:block;font-family:var(--f-display);font-weight:600;letter-spacing:-.02em;font-size:22px;line-height:1.15;margin-bottom:6px}
+.know-grid span{color:var(--mute);font-size:15px;font-weight:300}
+@media(max-width:860px){.know-grid{grid-template-columns:1fr 1fr}.know-grid div{border-bottom:1px solid var(--line);padding-left:0}}
+.marq{overflow:hidden;border-block:1px solid var(--line);margin:60px calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:20px 0}
+.marq div{display:flex;gap:56px;width:max-content;animation:mq 38s linear infinite;font-family:var(--f-display);font-weight:600;letter-spacing:-.03em;font-size:clamp(34px,5.6vw,82px);line-height:1;white-space:nowrap}
+.marq div span::after{content:"";display:inline-block;width:.18em;height:.18em;border-radius:50%;background:var(--accent);margin-left:56px;vertical-align:middle}
+.marq.r div{animation-direction:reverse;color:var(--mute);font-weight:300}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* órbita */
+.orbit{height:300vh;position:relative}
+.orbit .stick{position:sticky;top:0;height:100vh;display:grid;place-items:center;overflow:hidden}
+.ring{position:relative;width:min(88vw,720px);aspect-ratio:1;max-width:100%}
+.ring::before{content:"";position:absolute;inset:8%;border:1px solid var(--line);border-radius:50%}
+.ring::after{content:"";position:absolute;inset:26%;border:1px dashed var(--line);border-radius:50%}
+.core{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:0 28%}
+.core h2{font-size:clamp(20px,3.3vw,44px);margin:10px 0 0}
+.node{position:absolute;left:50%;top:50%;font-size:13px;font-weight:500;white-space:nowrap;padding:8px 14px;border:1px solid var(--line);background:var(--bg);border-radius:999px;transition:border-color .3s,color .3s}
+.node.on{border-color:var(--accent);color:var(--accent)}
+@media(max-width:560px){.node{font-size:10px;padding:6px 10px}}
+
+/* reportes */
+.reports{padding:clamp(80px,14vh,160px) var(--gutter)}
+.reports h2{font-size:clamp(30px,5vw,78px);margin:18px 0 48px;max-width:14ch}
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:70px minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--line);
+  transition:padding .35s,background .35s;cursor:default}
+.row:hover{padding-left:18px;background:var(--surface)}
+.row .n{font-size:12px;letter-spacing:.14em;color:var(--mute);font-weight:500}
+.row h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.025em;font-size:clamp(20px,2.6vw,38px);margin:0;line-height:1.1}
+.row p{margin:0;color:var(--mute);font-size:15px;font-weight:300}
+@media(max-width:760px){.row{grid-template-columns:40px 1fr}.row p{grid-column:2}}
+
+/* contacto */
+.contact{padding:clamp(90px,16vh,200px) var(--gutter) 60px;border-top:1px solid var(--line)}
+.contact h2{font-size:clamp(34px,7vw,112px);margin:20px 0 40px;max-width:12ch}
+.cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:var(--gutter)}
+@media(max-width:860px){.cgrid{grid-template-columns:1fr}}
+.cinfo p{margin:0 0 14px;color:var(--mute);font-weight:300}
+.cinfo b{color:var(--fg);font-weight:600;display:block}
+form{display:grid;gap:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.two{grid-template-columns:1fr}}
+label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);display:grid;gap:6px;font-weight:600}
+input,textarea{font:inherit;font-weight:400;font-size:17px;letter-spacing:0;text-transform:none;color:var(--fg);background:transparent;border:0;border-bottom:1px solid var(--line);padding:8px 0;border-radius:0;min-width:0;width:100%}
+input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+textarea{min-height:110px;resize:vertical}
+.btn{justify-self:start;font:inherit;font-weight:600;background:var(--fg);color:var(--bg);border:0;border-radius:999px;padding:14px 28px;cursor:pointer;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.ok{color:var(--accent);min-height:1.4em;margin:0;font-weight:500}
+footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:40px var(--gutter) 50px;border-top:1px solid var(--line);color:var(--mute);font-size:13px;font-weight:300}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.marq div,.cue i{animation:none}*{transition:none!important}}
+</style>
+
+<header>
+  <a class="logo" href="#top" aria-label="MC Portfolio">
+    <svg class="logo-svg" id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 825.98 174">
+      <g id="Capa_1-2" data-name="Capa 1">
+        <g>
+          <g>
+            <path d="M230.58,117.33c0,.64-.12,1.07-.37,1.29-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-48.47c0-.84.11-1.45.33-1.85.22-.39.6-.59,1.15-.59.39,0,.79.16,1.18.48.39.32.94.88,1.63,1.67l20.65,24.79,20.35-24.79c.79-.84,1.36-1.41,1.7-1.7.34-.3.71-.44,1.11-.44.54,0,.93.2,1.15.59.22.4.33,1.01.33,1.85v48.47c0,.64-.12,1.07-.37,1.29-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-34.48l-14.8,18.2c-.64.84-1.14,1.39-1.48,1.67-.35.27-.72.41-1.11.41s-.77-.14-1.11-.41c-.35-.27-.84-.83-1.48-1.67l-14.8-18.2v34.48Z"/>
+            <path d="M329.59,107.41c.54-.44.96-.67,1.26-.67.2,0,.39.07.59.22.2.15.37.32.52.52l2.15,2.96c.25.3.37.64.37,1.04,0,.2-.07.41-.22.63-.15.22-.37.46-.67.7-2.62,2.22-5.56,3.93-8.84,5.14-3.28,1.21-6.72,1.81-10.32,1.81-4.84,0-9.26-1.13-13.28-3.4-4.02-2.27-7.2-5.43-9.55-9.47-2.34-4.04-3.52-8.58-3.52-13.62s1.17-9.67,3.52-13.76c2.34-4.09,5.55-7.31,9.62-9.66,4.07-2.34,8.62-3.51,13.65-3.51,3.55,0,6.94.62,10.18,1.85,3.23,1.23,6.1,2.91,8.62,5.03.49.35.74.72.74,1.11,0,.35-.15.74-.44,1.18l-2.15,2.89c-.4.54-.79.81-1.18.81-.3,0-.72-.2-1.26-.59-2.12-1.63-4.42-2.91-6.88-3.85-2.47-.94-5.06-1.41-7.77-1.41-3.5,0-6.7.84-9.58,2.52-2.89,1.68-5.17,4.02-6.84,7.03-1.68,3.01-2.52,6.41-2.52,10.21s.83,6.98,2.48,9.99c1.65,3.01,3.92,5.36,6.81,7.07,2.89,1.7,6.1,2.55,9.66,2.55,5.57,0,10.53-1.78,14.87-5.33Z"/>
+            <path d="M381.8,102.05c-.12.12-.19.33-.19.63v14.65c0,.64-.12,1.07-.37,1.29-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-48.54c0-.64.12-1.07.37-1.29.25-.22.67-.33,1.26-.33h14.28c7.05,0,12.32,1.44,15.8,4.33,3.48,2.89,5.22,7.12,5.22,12.69,0,3.75-.83,6.94-2.48,9.58-1.65,2.64-4.11,4.65-7.36,6.03-3.26,1.38-7.2,2.07-11.84,2.07h-6.96c-.35,0-.58.06-.7.19ZM381.8,74.37c-.12.12-.19.33-.19.63v18.94c0,.3.06.52.19.67.12.15.36.22.7.22h7.18c4.34,0,7.72-.86,10.14-2.59,2.42-1.73,3.63-4.37,3.63-7.92s-1.17-6.13-3.52-7.73c-2.34-1.6-5.76-2.4-10.25-2.4h-7.18c-.35,0-.58.06-.7.19Z"/>
+            <path d="M426.2,79.55c2.34-4.12,5.55-7.35,9.62-9.69,4.07-2.34,8.62-3.51,13.65-3.51s9.57,1.16,13.62,3.48c4.04,2.32,7.23,5.5,9.55,9.55,2.32,4.05,3.48,8.58,3.48,13.62s-1.17,9.6-3.52,13.69c-2.34,4.1-5.56,7.3-9.66,9.62-4.1,2.32-8.68,3.48-13.76,3.48s-9.48-1.15-13.5-3.44c-4.02-2.29-7.19-5.46-9.51-9.51-2.32-4.04-3.48-8.56-3.48-13.54s1.17-9.61,3.52-13.73ZM432.86,103.23c1.65,2.99,3.92,5.32,6.81,6.99,2.89,1.68,6.08,2.52,9.58,2.52s6.72-.85,9.66-2.55c2.93-1.7,5.25-4.06,6.96-7.07,1.7-3.01,2.55-6.36,2.55-10.06s-.84-7.19-2.52-10.18c-1.68-2.98-3.97-5.31-6.88-6.99-2.91-1.68-6.12-2.52-9.62-2.52s-6.71.85-9.62,2.55c-2.91,1.7-5.21,4.06-6.88,7.07-1.68,3.01-2.52,6.41-2.52,10.21s.83,7.04,2.48,10.03Z"/>
+            <path d="M498.46,118.62c-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-48.54c0-.64.12-1.07.37-1.29.25-.22.67-.33,1.26-.33h14.13c14.06,0,21.09,5.35,21.09,16.06,0,3.55-.89,6.48-2.66,8.77-1.78,2.29-4.24,3.98-7.4,5.07l12.73,19.68c.39.54.59,1.01.59,1.41,0,.3-.14.51-.41.63-.27.12-.68.19-1.22.19h-4.37c-.84,0-1.46-.12-1.85-.37-.4-.25-.86-.79-1.41-1.63l-13.62-21.61c-.3-.39-.44-.74-.44-1.04,0-.39.37-.62,1.11-.67,7.45-.79,11.17-4.12,11.17-9.99,0-3.35-1.17-5.81-3.52-7.36-2.34-1.55-5.73-2.33-10.18-2.33h-7.1c-.35,0-.58.06-.7.19s-.19.36-.19.7v42.48c0,.64-.12,1.07-.37,1.29Z"/>
+            <path d="M578.45,73.85c-.25.22-.67.33-1.26.33h-13.91c-.35,0-.58.06-.7.19s-.19.33-.19.63v42.33c0,.64-.12,1.07-.37,1.29-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-42.33c0-.3-.06-.51-.19-.63-.12-.12-.36-.19-.7-.19h-13.91c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-3.77c0-.64.12-1.07.37-1.29.25-.22.67-.33,1.26-.33h37c.59,0,1.01.11,1.26.33.25.22.37.65.37,1.29v3.77c0,.64-.12,1.07-.37,1.29Z"/>
+            <path d="M598.87,118.62c-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-48.54c0-.64.12-1.07.37-1.29.25-.22.67-.33,1.26-.33h28.19c.59,0,1.01.11,1.26.33.25.22.37.65.37,1.29v3.77c0,.64-.12,1.07-.37,1.29-.25.22-.67.33-1.26.33h-21.53c-.35,0-.58.06-.7.19-.12.12-.19.33-.19.63v14.65c0,.3.06.51.19.63.12.12.36.18.7.18h18.94c.64,0,1.08.12,1.33.37.25.25.37.69.37,1.33v3.7c0,.59-.12,1.01-.37,1.26s-.69.37-1.33.37h-18.94c-.35,0-.58.06-.7.19-.12.12-.19.33-.19.63v19.02c0,.64-.12,1.07-.37,1.29Z"/>
+            <path d="M638.35,79.55c2.34-4.12,5.55-7.35,9.62-9.69,4.07-2.34,8.62-3.51,13.65-3.51s9.57,1.16,13.62,3.48c4.04,2.32,7.23,5.5,9.55,9.55,2.32,4.05,3.48,8.58,3.48,13.62s-1.17,9.6-3.52,13.69c-2.34,4.1-5.56,7.3-9.66,9.62-4.1,2.32-8.68,3.48-13.76,3.48s-9.48-1.15-13.5-3.44c-4.02-2.29-7.19-5.46-9.51-9.51-2.32-4.04-3.48-8.56-3.48-13.54s1.17-9.61,3.52-13.73ZM645.01,103.23c1.65,2.99,3.92,5.32,6.81,6.99,2.89,1.68,6.08,2.52,9.58,2.52s6.72-.85,9.66-2.55c2.93-1.7,5.25-4.06,6.96-7.07,1.7-3.01,2.55-6.36,2.55-10.06s-.84-7.19-2.52-10.18c-1.68-2.98-3.97-5.31-6.88-6.99-2.91-1.68-6.12-2.52-9.62-2.52s-6.71.85-9.62,2.55c-2.91,1.7-5.21,4.06-6.88,7.07-1.68,3.01-2.52,6.41-2.52,10.21s.83,7.04,2.48,10.03Z"/>
+            <path d="M711.17,111.74c.12.12.36.19.7.19h21.83c.59,0,1.01.11,1.26.33.25.22.37.65.37,1.29v3.77c0,.64-.12,1.07-.37,1.29-.25.22-.67.33-1.26.33h-28.49c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-48.54c0-.64.12-1.07.37-1.29.25-.22.67-.33,1.26-.33h4.14c.59,0,1.01.11,1.26.33.25.22.37.65.37,1.29v42.33c0,.3.06.51.19.63Z"/>
+            <path d="M756.86,118.62c-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-48.54c0-.64.12-1.07.37-1.29.25-.22.67-.33,1.26-.33h4.14c.59,0,1.01.11,1.26.33.25.22.37.65.37,1.29v48.54c0,.64-.12,1.07-.37,1.29Z"/>
+            <path d="M776.06,79.55c2.34-4.12,5.55-7.35,9.62-9.69,4.07-2.34,8.62-3.51,13.65-3.51s9.57,1.16,13.62,3.48c4.04,2.32,7.23,5.5,9.55,9.55,2.32,4.05,3.48,8.58,3.48,13.62s-1.17,9.6-3.52,13.69c-2.34,4.1-5.56,7.3-9.66,9.62-4.1,2.32-8.68,3.48-13.76,3.48s-9.48-1.15-13.5-3.44c-4.02-2.29-7.19-5.46-9.51-9.51-2.32-4.04-3.48-8.56-3.48-13.54s1.17-9.61,3.52-13.73ZM782.72,103.23c1.65,2.99,3.92,5.32,6.81,6.99,2.89,1.68,6.08,2.52,9.58,2.52s6.72-.85,9.66-2.55c2.93-1.7,5.25-4.06,6.96-7.07,1.7-3.01,2.55-6.36,2.55-10.06s-.84-7.19-2.52-10.18c-1.68-2.98-3.97-5.31-6.88-6.99-2.91-1.68-6.12-2.52-9.62-2.52s-6.71.85-9.62,2.55c-2.91,1.7-5.21,4.06-6.88,7.07-1.68,3.01-2.52,6.41-2.52,10.21s.83,7.04,2.48,10.03Z"/>
+          </g>
+          <g>
+            <path d="M69.22,81.25c0,.64-.12,1.07-.37,1.29-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-48.47c0-.84.11-1.45.33-1.85.22-.39.6-.59,1.15-.59.39,0,.79.16,1.18.48.39.32.94.88,1.63,1.67l20.65,24.79,20.35-24.79c.79-.84,1.36-1.41,1.7-1.7.34-.3.71-.44,1.11-.44.54,0,.93.2,1.15.59.22.4.33,1.01.33,1.85v48.47c0,.64-.12,1.07-.37,1.29-.25.22-.67.33-1.26.33h-4.14c-.59,0-1.01-.11-1.26-.33-.25-.22-.37-.65-.37-1.29v-34.48l-14.8,18.2c-.64.84-1.14,1.39-1.48,1.67-.35.27-.72.41-1.11.41s-.77-.14-1.11-.41c-.35-.27-.84-.83-1.48-1.67l-14.8-18.2v34.48Z"/>
+            <path d="M104.92,131.31c.54-.44.96-.67,1.26-.67.2,0,.39.07.59.22.2.15.37.32.52.52l2.15,2.96c.25.3.37.64.37,1.04,0,.2-.07.41-.22.63-.15.22-.37.46-.67.7-2.62,2.22-5.56,3.93-8.84,5.14-3.28,1.21-6.72,1.81-10.32,1.81-4.84,0-9.26-1.13-13.28-3.4-4.02-2.27-7.2-5.43-9.55-9.47-2.34-4.04-3.52-8.58-3.52-13.62s1.17-9.67,3.52-13.76c2.34-4.09,5.55-7.31,9.62-9.66,4.07-2.34,8.62-3.51,13.65-3.51,3.55,0,6.94.62,10.18,1.85,3.23,1.23,6.1,2.91,8.62,5.03.49.35.74.72.74,1.11,0,.35-.15.74-.44,1.18l-2.15,2.89c-.4.54-.79.81-1.18.81-.3,0-.72-.2-1.26-.59-2.12-1.63-4.42-2.91-6.88-3.85-2.47-.94-5.06-1.41-7.77-1.41-3.5,0-6.7.84-9.58,2.52-2.89,1.68-5.17,4.02-6.84,7.03-1.68,3.01-2.52,6.41-2.52,10.21s.83,6.98,2.48,9.99c1.65,3.01,3.92,5.36,6.81,7.07,2.89,1.7,6.1,2.55,9.66,2.55,5.57,0,10.53-1.78,14.87-5.33Z"/>
+          </g>
+          <path d="M167,7v160H7V7h160M174,0H0v174h174V0h0Z"/>
+        </g>
+      </g>
+    </svg>
+  </a>
+  <nav>
+    <a href="#nosotros">Nosotros</a><a href="#rumbo">Rumbo</a><a href="#proceso">Proceso</a><a href="#aliados">Aliados</a><a href="#reportes">Reportes</a><a href="#contacto">Contacto</a>
+    <button class="tt" id="tt" type="button" aria-label="Cambiar tema">Tema</button>
+  </nav>
+</header>
+
+<main id="top">
+<section class="hero">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <span class="eyebrow">Gestión de cartera y activos · México</span>
+    <h1 class="display">Cada cartera tiene <em>algo que contar</em>.</h1>
+    <div class="hero-foot">
+      <p>Administramos, recuperamos y comercializamos activos inmobiliarios y de crédito, con procesos automatizados y un equipo que responde por cada decisión.</p>
+      <span class="cue">Desplázate<i></i></span>
+    </div>
+  </div>
+</section>
+
+<section class="manifest" id="nosotros">
+  <div class="stick"><div class="wrap">
+    <span class="eyebrow">Quiénes somos</span>
+    <p class="big" id="mtext">Nacimos de un grupo de especialistas que decidió convertir la gestión de cartera y de activos en un oficio de precisión. Ordenamos el riesgo, aceleramos la recuperación y devolvemos valor a quien confió en nosotros.</p>
+  </div></div>
+</section>
+
+<section class="chap" id="rumbo">
+  <div class="stick">
+    <ul id="clist">
+      <li class="on">Propósito</li><li>Rumbo</li><li>Principios</li>
+    </ul>
+    <div class="panels">
+      <div class="panel on"><span class="eyebrow">Misión</span><p style="margin:0">Ofrecer un servicio de excelencia a cada cliente, con personas calificadas, éticas y responsables, apoyadas en procesos automatizados que elevan la calidad de la administración.</p></div>
+      <div class="panel"><span class="eyebrow">Visión</span><p style="margin:0">Mantener nuestros estándares y nuestra ética en cada operación, hasta convertirnos en la referencia nacional en gestión de cartera y activos.</p></div>
+      <div class="panel"><span class="eyebrow">Valores</span><p style="margin:0">Cuatro ideas sostienen cada decisión que tomamos sobre los activos de nuestros clientes y los propios.</p>
+        <div class="pillars"><div><b>Privacidad</b>Información resguardada</div><div><b>Confianza</b>Reglas claras</div><div><b>Integridad</b>Lo mismo con o sin testigos</div><div><b>Seguridad</b>Activos protegidos</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="flow" id="proceso">
+  <div class="stick">
+    <div>
+      <span class="eyebrow">Experiencia</span>
+      <h2 class="display">Del expediente a la <em>resolución</em>.</h2>
+      <p class="lead">Un mismo equipo acompaña el ciclo completo del activo, con la tecnología y la infraestructura para atender lo que cada cliente necesite y con transparencia hacia ambas partes.</p>
+    </div>
+    <div class="steps" id="steps">
+      <div class="rail"><i id="rail"></i></div>
+      <div class="step on"><span class="k">Etapa 1</span><h3>Administración de cartera y activos</h3><p>Control diario, trazabilidad y reportes de cada inmueble y cada crédito.</p></div>
+      <div class="step"><span class="k">Etapa 2</span><h3>Recuperación de créditos</h3><p>Estrategias de cobranza pensadas para el caso, no para el promedio.</p></div>
+      <div class="step"><span class="k">Etapa 3</span><h3>Litigio</h3><p>Defensa legal cuando el acuerdo no alcanza, con seguimiento puntual.</p></div>
+      <div class="step"><span class="k">Etapa 4</span><h3>Comercialización de bienes adjudicados</h3><p>Preparamos, posicionamos y vendemos para que el activo vuelva a circular.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="know">
+  <div class="wrap">
+    <span class="eyebrow">Por qué elegirnos</span>
+    <h2 class="display">Conocemos el inmueble <em>de adentro hacia afuera</em>.</h2>
+    <div class="know-grid">
+      <div><b>Inquilinos</b><span>Gestión y relación cotidiana</span></div>
+      <div><b>Marco legal</b><span>Derecho de propiedad aplicado</span></div>
+      <div><b>Mantenimiento</b><span>Preparación y cuidado físico</span></div>
+      <div><b>Contabilidad</b><span>Cifras que cuadran</span></div>
+    </div>
+    <p style="max-width:56ch;color:var(--mute);font-weight:300;margin:36px 0 0">Nuestros procesos cumplen con la normativa de los organismos fiscalizadores y mantienen niveles de calidad que generan confianza en el sector.</p>
+  </div>
+  <div class="marq" aria-label="Principios de trabajo"><div id="m1"></div></div>
+  <div class="marq r" aria-hidden="true"><div id="m2"></div></div>
+</section>
+
+<section class="orbit" id="aliados">
+  <div class="stick">
+    <div class="ring" id="ring">
+      <div class="core"><div><span class="eyebrow">Interacción</span><h2 class="display">Un solo <em>ecosistema</em></h2></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="reports" id="reportes">
+  <div class="wrap">
+    <span class="eyebrow">Innovación</span>
+    <h2 class="display">La información, <em>siempre a la vista</em>.</h2>
+    <div class="rows">
+      <div class="row"><span class="n">01</span><h3>Reportes ejecutivos en línea</h3><p>Indicadores clave para decidir sin esperar al cierre de mes.</p></div>
+      <div class="row"><span class="n">02</span><h3>Seguimiento en línea</h3><p>Consulta el estado de la cartera cuando lo necesites.</p></div>
+      <div class="row"><span class="n">03</span><h3>Reportes regulatorios CNBV</h3><p>Entregas listas para el regulador.</p></div>
+      <div class="row"><span class="n">04</span><h3>Reportes Condusef</h3><p>Información conforme a lo que solicita la autoridad.</p></div>
+      <div class="row"><span class="n">05</span><h3>Reportes de Buró de Crédito</h3><p>Datos reportados con puntualidad y consistencia.</p></div>
+      <div class="row"><span class="n">06</span><h3>Imágenes del proyecto</h3><p>Evidencia visual del avance de cada activo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="wrap">
+    <span class="eyebrow">Contacto</span>
+    <h2 class="display">Hablemos de <em>tu cartera</em>.</h2>
+    <div class="cgrid">
+      <div class="cinfo">
+        <p>Para cualquier duda o comentario, escríbenos y te respondemos.</p>
+        <p><b>Correo</b>proyectos@mcportfolio.mx</p>
+      </div>
+      <form id="cf" novalidate>
+        <div class="two">
+          <label for="f-n">Nombre<input id="f-n" autocomplete="given-name"></label>
+          <label for="f-a">Apellido<input id="f-a" autocomplete="family-name"></label>
+        </div>
+        <label for="f-e">Correo electrónico<input id="f-e" type="email" autocomplete="email"></label>
+        <label for="f-m">Mensaje<textarea id="f-m"></textarea></label>
+        <button class="btn" type="submit">Enviar mensaje</button>
+        <p class="ok" id="ok" role="status"></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><span>© MC Portfolio 2026</span><span>Aviso de privacidad</span></footer>
+
+<script>
+document.documentElement.classList.add('js');
+var RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+/* tema */
+$('#tt').onclick=function(){var r=document.documentElement,d=r.getAttribute('data-theme');
+  var dark=d?d==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.setAttribute('data-theme',dark?'light':'dark')};
+
+/* manifiesto: palabras */
+(function(){var p=$('#mtext');var words=p.textContent.split(' ');p.innerHTML=words.map(function(w){return '<span class="w">'+w+'</span>'}).join(' ')})();
+
+/* marquee */
+var vals=['Discreción','Equidad','Ética','Constancia','Honestidad','Innovación','Lealtad','Liderazgo','Oficio'];
+function mk(a){var s=a.map(function(v){return '<span>'+v+'</span>'}).join('');return s+s}
+$('#m1').innerHTML=mk(vals);
+$('#m2').innerHTML=mk(vals.slice().reverse());
+
+/* órbita */
+var allies=['Originadores de crédito sindicado','Fiduciarios','Valuadores','Despachos de cobranza','Auditores especializados','Bancos','Municipios'];
+var ring=$('#ring');
+var nodes=allies.map(function(t){var n=document.createElement('div');n.className='node';n.textContent=t;ring.appendChild(n);return n});
+
+function prog(sec){var r=sec.getBoundingClientRect(),h=sec.offsetHeight-innerHeight;return Math.min(1,Math.max(0,-r.top/h))}
+
+var manifest=$('.manifest'),mw=$$('.manifest .w'),chap=$('.chap'),cl=$$('#clist li'),pn=$$('.panel'),
+    flow=$('.flow'),st=$$('.step'),rail=$('#rail'),orb=$('.orbit');
+function frame(){
+  document.body.classList.toggle('sc',scrollY>8);
+  var p=prog(manifest),on=Math.floor(Math.min(1,p*1.25)*mw.length);
+  mw.forEach(function(w,i){w.classList.toggle('on',i<on||p>=.98)});
+  var c=Math.min(2,Math.floor(prog(chap)*3));
+  cl.forEach(function(e,i){e.classList.toggle('on',i===c)});pn.forEach(function(e,i){e.classList.toggle('on',i===c)});
+  var f=prog(flow),s=Math.min(3,Math.floor(f*4.2));
+  st.forEach(function(e,i){e.classList.toggle('on',i<=s)});
+  rail.style.height=Math.min(100,f*125)+'%';
+  var o=prog(orb),R=ring.offsetWidth*.42,rot=o*Math.PI*1.2;
+  nodes.forEach(function(n,i){var a=rot+i/nodes.length*Math.PI*2-Math.PI/2;
+    n.style.transform='translate(calc(-50% + '+(Math.cos(a)*R).toFixed(1)+'px),calc(-50% + '+(Math.sin(a)*R).toFixed(1)+'px))';
+    n.classList.toggle('on',Math.cos(a)>.92)});
+}
+var tick=false;function req(){if(!tick){tick=true;requestAnimationFrame(function(){tick=false;frame()})}}
+addEventListener('scroll',req,{passive:true});addEventListener('resize',req);frame();
+
+/* campo de puntos de la portada */
+(function(){var c=$('#field'),x=c.getContext('2d'),W,H,pts=[],mx=-999,my=-999,dpr=Math.min(2,devicePixelRatio||1);
+  function size(){var r=c.parentNode.getBoundingClientRect();W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.round(W*H/16000);pts=[];for(var i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18})}
+  size();addEventListener('resize',size);
+  c.parentNode.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
+  function col(){return getComputedStyle(document.documentElement).getPropertyValue('--fg').trim()}
+  function draw(){x.clearRect(0,0,W,H);var k=col();x.fillStyle=k;x.strokeStyle=k;
+    pts.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      var dx=p.x-mx,dy=p.y-my,d=Math.sqrt(dx*dx+dy*dy);if(d<140){p.x+=dx/d*.8;p.y+=dy/d*.8}
+      x.globalAlpha=.35;x.beginPath();x.arc(p.x,p.y,1.4,0,6.283);x.fill()});
+    for(var i=0;i<pts.length;i++)for(var j=i+1;j<pts.length;j++){var a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=dx*dx+dy*dy;
+      if(d<9000){x.globalAlpha=.14*(1-d/9000);x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}}
+    if(!RM)requestAnimationFrame(draw)}
+  draw()})();
+
+/* formulario (sin envío real) */
+$('#cf').addEventListener('submit',function(e){e.preventDefault();
+  var ok=$('#ok');if(!$('#f-n').value.trim()||!/.+@.+\..+/.test($('#f-e').value)||!$('#f-m').value.trim()){ok.textContent='Completa nombre, un correo válido y tu mensaje.';return}
+  ok.textContent='Vista previa: el formulario aún no está conectado a un correo, por lo que este mensaje no se envió.';this.reset()});
+</script>
+
+</body></html>
